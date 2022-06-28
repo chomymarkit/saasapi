@@ -1,9 +1,9 @@
 post:
   tags:
-    - Echo
-  summary: Echo test
-  description: Receive the exact message you've sent
-  operationId: echo
+    - Payment with Coinbase
+  summary: Create a payment page with Coinbase Commerce
+  description: Create a universal payment page loaded with payment methods from Coinbase Commerce dashboard
+  operationId: UniversalPaymentCoinbase
   security:
     - upp-api-key: []
     - basic_auth: []
@@ -21,29 +21,15 @@ post:
       content:
         application/json:
           schema:
-            type: string
-          examples:
-            response:
-              value: Hello world!
-        application/xml:
-          schema:
-            type: string
-        text/csv:
-          schema:
-            type: string
+            $ref: ../components/schemas/PaymentCoinbaseResponse.yaml     
     '400': 
       description: Unauthorized
   requestBody:
     content:
       application/json:
         schema:
-          type: string
-          example: Hello world!
-      application/xml:
-        schema:
-          type: string
-          example: Hello world!
-    description: Echo payload
+          $ref: ../components/schemas/PaymentCoinbase.yaml
+    description: Payment payload
     required: true
   x-codeSamples:
     - lang: "C#"
@@ -52,3 +38,4 @@ post:
     - lang: PHP
       source:
         $ref: ../code_samples/PHP/echo/post.php
+        

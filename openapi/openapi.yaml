@@ -14,10 +14,14 @@ info:
   description:
     $ref: ./info-description.md
 tags:
-  - name: Payment
-    description: Universal Payment Processor.
-  - name: Echo
-    description: Example echo operations.
+  - name: Payment with Adyen
+    description: Universal Payment Processor with Adyen.
+  - name: Payment with Coinbase
+    description: Universal Payment Processor with Coinbase Commerce.    
+  - name: Webhook with Adyen 
+    description: Receive payment confirmation with Adyen Webhook.    
+  - name: Webhook with Coinbase 
+    description: Receive payment confirmation with Coinbase Webhook  
   - name: User
     description: Operations about users.
   - name: Tag
@@ -35,6 +39,12 @@ paths:
     $ref: 'paths/users_{username}.yaml'
   /payments:
     $ref: paths/payments.yaml
+  /webhooks/notifications:
+    $ref: paths/webhook-adyen.yaml    
+  /payments/coinbase:
+    $ref: paths/payments-coinbase.yaml
+  /webhooks/notifications/coinbase:
+    $ref: paths/webhook-coinbase.yaml       
   /echo:
     $ref: paths/echo.yaml
   /pathItem:
@@ -51,10 +61,10 @@ components:
           scopes:
             'read:users': read users info
             'write:users': modify or remove users
-    api_key:
+    upp-api-key:
       type: apiKey
       in: header
-      name: api_key
+      name: upp-api-key
     basic_auth:
       type: http
       scheme: basic

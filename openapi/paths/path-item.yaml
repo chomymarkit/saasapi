@@ -6,7 +6,7 @@ post:
     Operation description **Markdown**.
   operationId: operationId
   security:
-    - api_key: []
+    - upp-api-key: []
     - basic_auth: []
   requestBody:
     content:

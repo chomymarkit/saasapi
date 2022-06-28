@@ -11,23 +11,12 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   x-logo:
     url: https://mymarkit-production.s3.amazonaws.com/img/logos/logo-header.svg
-  description: >
-    This is an **example** API to demonstrate features of the OpenAPI
-    specification.
-
-
-    # Introduction
-
-
-    This API implementation guide is intended to to be a good starting point for
-
-    implementing various MyMarkit SaaS products.
-
-
-    [Company Site](https://mymarkit.com).
+  description: "This is an **example** API to demonstrate features of the OpenAPI specification.\r\n\r\n# Introduction\r\n\r\nThis API implementation guide is intended to to be a good starting point for\r\nimplementing various MyMarkit SaaS products.\r\n\r\n[Company Site](https://mymarkit.com).\r\n"
 tags:
-  - name: Payment
-    description: Universal Payment Processor.
+  - name: Payment with Adyen
+    description: Universal Payment Processor with Adyen.
+  - name: Payment with Coinbase
+    description: Universal Payment Processor with Coinbase Commerce.
   - name: Echo
     description: Example echo operations.
   - name: User
@@ -72,7 +61,7 @@ paths:
       security:
         - main_auth:
             - read:users
-        - api_key: []
+        - upp-api-key: []
       responses:
         '200':
           description: Success
@@ -127,14 +116,14 @@ paths:
   /payments:
     post:
       tags:
-        - Payment
-      summary: Create a payment page
+        - PaymentAdyen
+      summary: Create a payment page with Adyen
       description: >-
         Create a universal payment page loaded with payment methods from Adyen
         dashboard
       operationId: UniversalPayment
       security:
-        - api_key: []
+        - upp-api-key: []
         - basic_auth: []
       responses:
         '200':
@@ -162,28 +151,50 @@ paths:
         required: true
       x-codeSamples:
         - lang: C#
-          source: |
-            API.v1.Echo echo = new API.v1.Echo();
-            echo.message = "Hello World!");
-            EchoResponse response = echo.post();
-            if (response.statusCode == HttpStatusCode.Created)
-            {
-              // Success
-            }
-            else
-            {
-              // Something wrong -- check response for errors
-              Console.WriteLine(response.getRawResponse());
-            }
+          source: "API.v1.Echo echo = new API.v1.Echo();\r\necho.message = \"Hello World!\");\r\nEchoResponse response = echo.post();\r\nif (response.statusCode == HttpStatusCode.Created)\r\n{\r\n  // Success\r\n}\r\nelse\r\n{\r\n  // Something wrong -- check response for errors\r\n  Console.WriteLine(response.getRawResponse());\r\n}\r\n"
         - lang: PHP
-          source: |
-            $form = new \API\Entities\Echo();
-            $form->setMessage("Hello World!");
-            try {
-                $pet = $client->echo()->post($form);
-            } catch (UnprocessableEntityException $e) {
-                var_dump($e->getErrors());
-            }
+          source: "$form = new \\API\\Entities\\Echo();\r\n$form->setMessage(\"Hello World!\");\r\ntry {\r\n    $pet = $client->echo()->post($form);\r\n} catch (UnprocessableEntityException $e) {\r\n    var_dump($e->getErrors());\r\n}\r\n"
+  /payments/coinbase:
+    post:
+      tags:
+        - PaymentCoinbase
+      summary: Create a payment page with Coinbase Commerce
+      description: >-
+        Create a universal payment page loaded with payment methods from
+        Coinbase Commerce dashboard
+      operationId: UniversalPaymentCoinbase
+      security:
+        - upp-api-key: []
+        - basic_auth: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              $ref: '#/components/headers/ExpiresAfter'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '400':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payment'
+        description: Payment payload
+        required: true
+      x-codeSamples:
+        - lang: C#
+          source: "API.v1.Echo echo = new API.v1.Echo();\r\necho.message = \"Hello World!\");\r\nEchoResponse response = echo.post();\r\nif (response.statusCode == HttpStatusCode.Created)\r\n{\r\n  // Success\r\n}\r\nelse\r\n{\r\n  // Something wrong -- check response for errors\r\n  Console.WriteLine(response.getRawResponse());\r\n}\r\n"
+        - lang: PHP
+          source: "$form = new \\API\\Entities\\Echo();\r\n$form->setMessage(\"Hello World!\");\r\ntry {\r\n    $pet = $client->echo()->post($form);\r\n} catch (UnprocessableEntityException $e) {\r\n    var_dump($e->getErrors());\r\n}\r\n"
   /echo:
     post:
       tags:
@@ -192,7 +203,7 @@ paths:
       description: Receive the exact message you've sent
       operationId: echo
       security:
-        - api_key: []
+        - upp-api-key: []
         - basic_auth: []
       responses:
         '200':
@@ -234,28 +245,9 @@ paths:
         required: true
       x-codeSamples:
         - lang: C#
-          source: |
-            API.v1.Echo echo = new API.v1.Echo();
-            echo.message = "Hello World!");
-            EchoResponse response = echo.post();
-            if (response.statusCode == HttpStatusCode.Created)
-            {
-              // Success
-            }
-            else
-            {
-              // Something wrong -- check response for errors
-              Console.WriteLine(response.getRawResponse());
-            }
+          source: "API.v1.Echo echo = new API.v1.Echo();\r\necho.message = \"Hello World!\");\r\nEchoResponse response = echo.post();\r\nif (response.statusCode == HttpStatusCode.Created)\r\n{\r\n  // Success\r\n}\r\nelse\r\n{\r\n  // Something wrong -- check response for errors\r\n  Console.WriteLine(response.getRawResponse());\r\n}\r\n"
         - lang: PHP
-          source: |
-            $form = new \API\Entities\Echo();
-            $form->setMessage("Hello World!");
-            try {
-                $pet = $client->echo()->post($form);
-            } catch (UnprocessableEntityException $e) {
-                var_dump($e->getErrors());
-            }
+          source: "$form = new \\API\\Entities\\Echo();\r\n$form->setMessage(\"Hello World!\");\r\ntry {\r\n    $pet = $client->echo()->post($form);\r\n} catch (UnprocessableEntityException $e) {\r\n    var_dump($e->getErrors());\r\n}\r\n"
   /pathItem:
     post:
       tags:
@@ -265,7 +257,7 @@ paths:
         Operation description **Markdown**.
       operationId: operationId
       security:
-        - api_key: []
+        - upp-api-key: []
         - basic_auth: []
       requestBody:
         content:
@@ -300,7 +292,7 @@ paths:
         Operation description **markdown**.
       operationId: postPathItemWithExamples
       security:
-        - api_key: []
+        - upp-api-key: []
         - basic_auth: []
       requestBody:
         content:
@@ -345,10 +337,10 @@ components:
           scopes:
             read:users: read users info
             write:users: modify or remove users
-    api_key:
+    upp-api-key:
       type: apiKey
       in: header
-      name: api_key
+      name: upp-api-key
     basic_auth:
       type: http
       scheme: basic
