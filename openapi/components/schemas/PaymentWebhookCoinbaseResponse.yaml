@@ -1,0 +1,22 @@
+type: object
+properties:
+  attempt_number:
+    description: attempt number
+    type: int
+    minLength: 1
+    example: 1
+  id:
+    description: id
+    type: string
+    minLength: 1
+    example: "51dc060b-8ac3-4615-9ef1-b4e3206cdee0"
+  scheduled_for:
+    description: scheduled for
+    type: string
+    minLength: 1
+    example: "2022-07-01T22:10:50Z" 
+  event:
+    description: event
+    type: object
+    minLength: 1
+    example: {"api_version": "2018-03-22", "created_at": "2022-07-01T22:10:50Z", "data": {"id": "937d2722-eac6-4e43-87ee-36320b911ad7", "code": "8HWHNCW4", "name": "UPP Portal", "utxo": false, "pricing": {"dai": {"amount": "10.432267416236208673", "currency": "DAI"}, "usdc": {"amount": "10.428616", "currency": "USDC"}, "local": {"amount": "10.00", "currency": "EUR"}, "tether": {"amount": "10.441616", "currency": "USDT"}, "bitcoin": {"amount": "0.00053858", "currency": "BTC"}, "dogecoin": {"amount": "158.46552382", "currency": "DOGE"}, "ethereum": {"amount": "0.009800000", "currency": "ETH"}, "litecoin": {"amount": "0.20400266", "currency": "LTC"}, "shibainu": {"amount": "1043905.517781834434434434", "currency": "SHIB"}, "bitcoincash": {"amount": "0.10269945", "currency": "BCH"}}, "fee_rate": 0.01, "logo_url": "https://res.cloudinary.com/commerce/image/upload/v1655522635/nzlih20yojcvbicpl3e1.png", "metadata": {}, "payments": [], "resource": "charge", "timeline": [{"time": "2022-07-01T22:10:50Z", "status": "NEW"}], "addresses": {"dai": "0xd2eabd78481ea6b349d3a701847e08ba24fb7d44", "usdc": "0xd2eabd78481ea6b349d3a701847e08ba24fb7d44", "tether": "0xd2eabd78481ea6b349d3a701847e08ba24fb7d44", "bitcoin": "3GwfdMbWDZYC5p9Jf93u6L3zJvExgarFHp", "dogecoin": "DEvZDwdvhSyU5CHB9ZFXFosyrhfkcXukWE", "ethereum": "0xd2eabd78481ea6b349d3a701847e08ba24fb7d44", "litecoin": "MBCMuEGiH7Nej2sz9CHTzTWsDuSxCc9bth", "shibainu": "0xd2eabd78481ea6b349d3a701847e08ba24fb7d44", "bitcoincash": "qppy6ftf8lszm06q6jyx3pyqmcdv4cdgtgt2cenl3c"}, "pwcb_only": false, "cancel_url": "https://saasdevs.net/coinbase/cancel/", "created_at": "2022-07-01T22:10:50Z", "expires_at": "2022-07-01T23:10:50Z", "hosted_url": "https://commerce.coinbase.com/charges/8HWHNCW4", "brand_color": "#E3B14D", "description": "Total Charge in Local Currency:", "fees_settled": true, "pricing_type": "fixed_price", "redirect_url": "https://saasdevs.net/coinbase/success/", "support_email": "tim@mymarkit.com", "brand_logo_url": "https://res.cloudinary.com/commerce/image/upload/v1655522635/nzlih20yojcvbicpl3e1.png", "exchange_rates": {"BCH-USD": "101.545", "BTC-USD": "19363.13", "DAI-USD": "0.99965", "ETH-USD": "1064.11", "LTC-USD": "51.12", "DOGE-USD": "0.06581", "SHIB-USD": "0.00000999", "USDC-USD": "1.0", "USDT-USD": "0.998755"}, "offchain_eligible": false, "organization_name": "MyMarkit!", "payment_threshold": {"overpayment_absolute_threshold": {"amount": "0.10", "currency": "USD"}, "overpayment_relative_threshold": "0.01", "underpayment_absolute_threshold": {"amount": "0.10", "currency": "USD"}, "underpayment_relative_threshold": "0.01"}, "local_exchange_rates": {"BCH-EUR": "97.37", "BTC-EUR": "18567.31", "DAI-EUR": "0.96", "ETH-EUR": "1020.38", "LTC-EUR": "49.02", "DOGE-EUR": "0.06", "SHIB-EUR": "0.00", "USDC-EUR": "0.96", "USDT-EUR": "0.96"}}, "id": "b180df29-0c27-44e1-9129-3d8cab79ce18", "resource": "event", "type": "charge:created"}

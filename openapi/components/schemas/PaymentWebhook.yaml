@@ -1,22 +1,12 @@
 type: object
 properties:
-  merchantId:
-    description: unique merchant id
+  upp-api-key:
+    description: unique upp api key
     type: string
     minLength: 4
-    example: WonderWebShop
-  totalAmount:
-    description: total amount to pay
-    type: integer
-    minLength: 1
-    example: 10
-  currency:
-    description: currency
-    type: string
-    minLength: 1
-    example: USD
-  returnUrl:
-    description: the url to return to upon successful payment completion
-    type: string
-    minLength: 1
-    example: https://example.com/result/success
+    example: 12345678xyz
+  upp-client-key:
+    description: unique client key [er customer]
+    type: String
+    minLength: 4
+    example: xyzw12345

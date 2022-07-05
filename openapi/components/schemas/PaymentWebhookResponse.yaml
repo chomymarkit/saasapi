@@ -1,18 +1,28 @@
 type: object
 properties:
-  transactionId:
-    description: unique transaction Id
+  live:
+    description: live
     type: string
     minLength: 4
-    example: JUWX2123
-  paymentPageUrl:
-    description: payment page url
-    type: string
+    example: "false"
+  notificationItems:
+    description: notification items
+    type: array
     minLength: 1
-    example: https://mymarkitpay.com/payments
-  createStatus:
-    description: status of the page creation
-    type: string
-    minLength: 1
-    example: true
-
+    example: [{
+        "amount": {
+          "currency": "EUR",
+          "value": 1000
+        },
+        "eventCode": "AUTHORISATION",
+        "eventDate": "2022-06-20T03:26:47+02:00",
+        "merchantAccountCode": "MyMarkit_US",
+        "merchantReference": "Reference 46b0ad7e-fa3b-466e-823e-b04e6bbba1d4",
+        "operations": [
+          "REFUND"
+        ],
+        "paymentMethod": "ideal",
+        "pspReference": "QW2KB9G5F4BLNK82",
+        "reason": "",
+        "success": "true"
+      }]
