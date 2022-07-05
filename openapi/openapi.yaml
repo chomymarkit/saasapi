@@ -45,8 +45,6 @@ paths:
     $ref: paths/payments-coinbase.yaml
   /user-provided-urle:
     $ref: paths/webhook-coinbase.yaml       
-  /echo:
-    $ref: paths/echo.yaml
   /pathItem:
     $ref: paths/path-item.yaml
   /pathItemWithExamples:
