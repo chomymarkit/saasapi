@@ -2,7 +2,7 @@ type: object
 properties:
   attempt_number:
     description: attempt number
-    type: int
+    type: integer
     minLength: 1
     example: 1
   id:

@@ -7,6 +7,6 @@ properties:
     example: 12345678xyz
   upp-client-key:
     description: unique client key [er customer]
-    type: String
+    type: string
     minLength: 4
     example: xyzw12345
