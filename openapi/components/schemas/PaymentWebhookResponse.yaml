@@ -8,8 +8,10 @@ properties:
   notificationItems:
     description: notification items
     type: array
-    minLength: 1
-    example: [{
+    items: 
+      type: object
+      minLength: 1
+      example: {
         "amount": {
           "currency": "EUR",
           "value": 1000
@@ -25,4 +27,4 @@ properties:
         "pspReference": "QW2KB9G5F4BLNK82",
         "reason": "",
         "success": "true"
-      }]
+        }
