@@ -1,22 +1,22 @@
 type: object
 properties:
-  merchantId:
-    description: unique merchant id
-    type: string
-    minLength: 4
-    example: WonderWebShop
-  totalAmount:
-    description: total amount to pay
-    type: integer
-    minLength: 1
-    example: 10
-  currency:
-    description: currency
-    type: string
-    minLength: 1
-    example: USD
-  returnUrl:
-    description: the url to return to upon successful payment completion
-    type: string
-    minLength: 1
-    example: https://example.com/result/success
+        merchantId:
+          description: unique merchant id
+          type: string
+          minLength: 4
+          example: WonderWebShop
+        value:
+          description: total amount to pay
+          type: string
+          minLength: 1
+          example: 10
+        currency:
+          description: currency
+          type: string
+          minLength: 1
+          example: USD
+        returnURL:
+          description: the url to return to upon successful payment completion
+          type: string
+          minLength: 1
+          example: https://saasdevs.net

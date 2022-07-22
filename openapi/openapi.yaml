@@ -1,68 +1,191 @@
 openapi: 3.1.0
 info:
   version: 1.0.0
-  title: MyMarkit SaaS
-  termsOfService: 'https://mymarkitinc.com/terms/'
+  title: MyMarkit SaaS V1
+  termsOfService: https://mymarkitinc.com/terms/
   contact:
     email: contact@mymarkitinc.com
-    url: 'http://mymarkitinc.com/contact'
+    url: http://mymarkitinc.com/contact
   license:
     name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
   x-logo:
-    url: 'https://mymarkit-production.s3.amazonaws.com/img/logos/logo-header.svg'
-  description:
-    $ref: ./info-description.md
+    url: https://mymarkit-production.s3.amazonaws.com/img/logos/logo-header.svg
+  description: "This is an **example** API to demonstrate features of the OpenAPI specification.\r\n\r\n# Introduction\r\n\r\nThis API implementation guide is intended to to be a good starting point for\r\nimplementing various MyMarkit SaaS products.\r\n\r\n[Company Site](https://mymarkit.com).\r\n"
 tags:
   - name: Payment with Adyen
     description: Universal Payment Processor with Adyen.
   - name: Payment with Coinbase
-    description: Universal Payment Processor with Coinbase Commerce.    
-  - name: Webhook with Adyen 
-    description: Receive payment confirmation with Adyen Webhook.    
-  - name: Webhook with Coinbase 
-    description: Receive payment confirmation with Coinbase Webhook  
-  - name: User
-    description: Operations about users.
-  - name: Tag
-    description: This is a tag description.
-
+    description: Universal Payment Processor with Coinbase Commerce.
 servers:
-  - url: 'https://{tenant}/api/v1'
-    variables:
-      tenant:
-        default: www
-        description: Your tenant id
-  - url: 'https://example.com/api/v1'
+  - url: https://8gu4au3nb4.execute-api.us-east-1.amazonaws.com/test
 paths:
-  '/users/{username}':
-    $ref: 'paths/users_{username}.yaml'
-  /payments:
-    $ref: paths/payments.yaml
-  /user-provided-url:
-    $ref: paths/webhook-adyen.yaml    
-  /payments/coinbase:
-    $ref: paths/payments-coinbase.yaml
-  /user-provided-urle:
-    $ref: paths/webhook-coinbase.yaml       
-  /pathItem:
-    $ref: paths/path-item.yaml
-  /pathItemWithExamples:
-    $ref: paths/path-item-with-examples.yaml
+  /api/v1/payments/adyen/:
+    post:
+      tags:
+        - Payment with Adyen
+      summary: Create a payment page with Adyen
+      description: >-
+        Create a universal payment page loaded with payment methods from Adyen
+        dashboard
+      operationId: UniversalPayment
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              $ref: '#/components/headers/ExpiresAfter'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentAdyenResponse'
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentAdyen'
+        description: Payment payload
+        required: true
+      x-codeSamples:
+
+  /api/v1/payments/coinbase/:
+    post:
+      tags:
+        - Payment with Coinbase
+      summary: Create a payment page with Coinbase Commerce
+      description: >-
+        Create a universal payment page loaded with payment methods from
+        Coinbase Commerce dashboard
+      operationId: UniversalPaymentCoinbase
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              $ref: '#/components/headers/ExpiresAfter'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentCoinbaseResponse'
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCoinbase'
+        description: Payment payload
+        required: true
+      x-codeSamples:
+
 components:
   securitySchemes:
-    main_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: 'http://example.com/api/oauth/dialog'
-          scopes:
-            'read:users': read users info
-            'write:users': modify or remove users
-    upp-api-key:
+    ApiKeyAuth:
       type: apiKey
       in: header
-      name: upp-api-key
-    basic_auth:
-      type: http
-      scheme: basic
+      name: X-UPP-API-KEY
+  schemas:
+    PaymentAdyen:
+      type: object
+      properties:
+        merchantId:
+          description: unique merchant id
+          type: string
+          minLength: 4
+          example: WonderWebShop
+        value:
+          description: total amount to pay
+          type: string
+          minLength: 1
+          example: 10
+        currency:
+          description: currency
+          type: string
+          minLength: 1
+          example: USD
+        returnURL:
+          description: the url to return to upon successful payment completion
+          type: string
+          minLength: 1
+          example: https://saasdevs.net
+    PaymentAdyenResponse:
+      type: object
+      properties:
+        transactionId:
+          description: unique transaction Id
+          type: string
+          minLength: 4
+          example: JUWX2123
+        paymentPageUrl:
+          description: payment page url
+          type: string
+          minLength: 1
+          example: https://saasdevs.net/payments/adyen?transactionId=JUWX2123
+        createStatus:
+          description: status of the page creation
+          type: string
+          minLength: 1
+          example: true
+    PaymentCoinbase:
+      type: object
+      properties:
+        merchantId:
+          description: unique merchant id
+          type: string
+          minLength: 4
+          example: WonderWebShop
+        value:
+          description: total amount to pay
+          type: string
+          minLength: 1
+          example: 10
+        currency:
+          description: currency
+          type: string
+          minLength: 1
+          example: USD
+        returnURL:
+          description: the url to return to upon successful payment completion
+          type: string
+          minLength: 1
+          example: https://saasdevs.net
+    PaymentCoinbaseResponse:
+      type: object
+      properties:
+        transactionId:
+          description: unique transaction Id
+          type: string
+          minLength: 4
+          example: JUWX2123
+        paymentPageUrl:
+          description: payment page url
+          type: string
+          minLength: 1
+          example: https://saasdevs.net/payments/coinbase?transactionId=JUWX2123
+        createStatus:
+          description: status of the page creation
+          type: string
+          minLength: 1
+          example: true
+  headers:
+    ExpiresAfter:
+      description: date in UTC when token expires
+      schema:
+        type: string
+        format: date-time

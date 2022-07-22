@@ -1,41 +1,42 @@
 post:
-  tags:
-    - Payment with Coinbase
-  summary: Create a payment page with Coinbase Commerce
-  description: Create a universal payment page loaded with payment methods from Coinbase Commerce dashboard
-  operationId: UniversalPaymentCoinbase
-  security:
-    - upp-api-key: []
-    - basic_auth: []
-  responses:
-    '200':
-      description: OK
-      headers:
-        X-Rate-Limit:
-          description: calls per hour allowed by the user
-          schema:
-            type: integer
-            format: int32
-        X-Expires-After:
-          $ref: ../components/headers/ExpiresAfter.yaml
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/PaymentCoinbaseResponse.yaml     
-    '400': 
-      description: Unauthorized
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/PaymentCoinbase.yaml
-    description: Payment payload
-    required: true
-  x-codeSamples:
-    - lang: "C#"
-      source:
-        $ref: "../code_samples/csharp/echo/post.cs"
-    - lang: PHP
-      source:
-        $ref: ../code_samples/PHP/echo/post.php
+      tags:
+        - Payment with Coinbase
+      summary: Create a payment page with Coinbase Commerce
+      description: >-
+        Create a universal payment page loaded with payment methods from
+        Coinbase Commerce dashboard
+      operationId: UniversalPaymentCoinbase
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              $ref: '../components/headers/ExpiresAfter'
+          content:
+            application/json:
+              schema:
+                $ref: '../components/schemas/PaymentCoinbaseResponse'
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/PaymentCoinbase'
+        description: Payment payload
+        required: true
+      x-codeSamples:
+        - lang: "C#"
+          source:
+            $ref: "../code_samples/csharp/echo/post.cs"
+        - lang: PHP
+          source:
+            $ref: ../code_samples/PHP/echo/post.php
         

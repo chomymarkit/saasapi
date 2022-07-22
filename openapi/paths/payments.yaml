@@ -1,41 +1,42 @@
 post:
-  tags:
-    - Payment with Adyen
-  summary: Create a payment page with Adyen
-  description: Create a universal payment page loaded with payment methods from Adyen dashboard
-  operationId: UniversalPayment
-  security:
-    - upp-api-key: []
-    - basic_auth: []
-  responses:
-    '200':
-      description: OK
-      headers:
-        X-Rate-Limit:
-          description: calls per hour allowed by the user
-          schema:
-            type: integer
-            format: int32
-        X-Expires-After:
-          $ref: ../components/headers/ExpiresAfter.yaml
-      content:
-        application/json:
-          schema:
-            $ref: ../components/schemas/PaymentResponse.yaml     
-    '400': 
-      description: Unauthorized
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: ../components/schemas/Payment.yaml
-    description: Payment payload
-    required: true
-  x-codeSamples:
-    - lang: "C#"
-      source:
-        $ref: "../code_samples/csharp/echo/post.cs"
-    - lang: PHP
-      source:
-        $ref: ../code_samples/PHP/echo/post.php
+      tags:
+        - Payment with Adyen
+      summary: Create a payment page with Adyen
+      description: >-
+        Create a universal payment page loaded with payment methods from Adyen
+        dashboard
+      operationId: UniversalPayment
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              $ref: '../components/headers/ExpiresAfter'
+          content:
+            application/json:
+              schema:
+                $ref: '../components/schemas/PaymentAdyenResponse'
+        '401':
+          description: Unauthorized
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/PaymentAdyen'
+        description: Payment payload
+        required: true
+      x-codeSamples:
+        - lang: "C#"
+          source:
+            $ref: "../code_samples/csharp/echo/post.cs"
+        - lang: PHP
+          source:
+            $ref: ../code_samples/PHP/echo/post.php
     

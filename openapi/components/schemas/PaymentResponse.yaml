@@ -9,7 +9,7 @@ properties:
     description: payment page url
     type: string
     minLength: 1
-    example: https://mymarkitpay.com/payments
+    example: https://saasdevs.net/payments/adyen?transactionId=JUWX2123
   createStatus:
     description: status of the page creation
     type: string
