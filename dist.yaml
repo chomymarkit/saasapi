@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   version: 1.0.0
-  title: MyMarkit SaaS
+  title: MyMarkit SaaS V1
   termsOfService: https://mymarkitinc.com/terms/
   contact:
     email: contact@mymarkitinc.com
@@ -17,105 +17,10 @@ tags:
     description: Universal Payment Processor with Adyen.
   - name: Payment with Coinbase
     description: Universal Payment Processor with Coinbase Commerce.
-  - name: Webhook with Adyen
-    description: Receive payment confirmation with Adyen Webhook.
-  - name: Webhook with Coinbase
-    description: Receive payment confirmation with Coinbase Webhook
-  - name: User
-    description: Operations about users.
-  - name: Tag
-    description: This is a tag description.
 servers:
-  - url: https://{tenant}/api/v1
-    variables:
-      tenant:
-        default: www
-        description: Your tenant id
-  - url: https://example.com/api/v1
+  - url: https://8gu4au3nb4.execute-api.us-east-1.amazonaws.com/test
 paths:
-  /users/{username}:
-    parameters:
-      - name: pretty_print
-        in: query
-        description: Pretty print response
-        schema:
-          type: boolean
-    get:
-      tags:
-        - User
-      summary: Get user by user name
-      description: |
-        Some description of the operation.
-        You can use `Markdown` here.
-      operationId: getUserByName
-      parameters:
-        - name: username
-          in: path
-          description: The name that needs to be fetched
-          required: true
-          schema:
-            type: string
-        - name: with_email
-          in: query
-          description: Filter users without email
-          schema:
-            type: boolean
-      security:
-        - main_auth:
-            - read:users
-        - upp-api-key: []
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              example:
-                username: user1
-                email: user@example.com
-        '403':
-          description: Forbidden
-          $ref: '#/components/responses/Problem'
-        '404':
-          description: User not found
-          $ref: '#/components/responses/Problem'
-    put:
-      tags:
-        - User
-      summary: Updated user
-      description: This can only be done by the logged in user.
-      operationId: updateUser
-      parameters:
-        - name: username
-          in: path
-          description: The name that needs to be updated
-          required: true
-          schema:
-            type: string
-      security:
-        - main_auth:
-            - write:users
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
-        description: Updated user object
-        required: true
-      responses:
-        '200':
-          description: OK
-        '400':
-          description: Invalid user supplied
-          $ref: '#/components/responses/Problem'
-        '404':
-          description: User not found
-          $ref: '#/components/responses/Problem'
-  /payments:
+  /api/v1/payments/adyen:
     post:
       tags:
         - Payment with Adyen
@@ -125,8 +30,7 @@ paths:
         dashboard
       operationId: UniversalPayment
       security:
-        - upp-api-key: []
-        - basic_auth: []
+        - ApiKeyAuth: []
       responses:
         '200':
           description: OK
@@ -141,61 +45,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaymentResponse'
-        '400':
+                $ref: '#/components/schemas/PaymentAdyenResponse'
+        '401':
           description: Unauthorized
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Payment'
+              $ref: '#/components/schemas/PaymentAdyen'
         description: Payment payload
         required: true
-      x-codeSamples:
-        - lang: C#
-          source: "API.v1.Echo echo = new API.v1.Echo();\r\necho.message = \"Hello World!\");\r\nEchoResponse response = echo.post();\r\nif (response.statusCode == HttpStatusCode.Created)\r\n{\r\n  // Success\r\n}\r\nelse\r\n{\r\n  // Something wrong -- check response for errors\r\n  Console.WriteLine(response.getRawResponse());\r\n}\r\n"
-        - lang: PHP
-          source: "$form = new \\API\\Entities\\Echo();\r\n$form->setMessage(\"Hello World!\");\r\ntry {\r\n    $pet = $client->echo()->post($form);\r\n} catch (UnprocessableEntityException $e) {\r\n    var_dump($e->getErrors());\r\n}\r\n"
-  /user-provided-url:
-    post:
-      tags:
-        - Webhook with Adyen
-      summary: We relay payment confirmation with Adyen Webhook
-      description: We relay payment confirmation with Adyen Webhook
-      operationId: UniversalPaymentAdyenWebhook
-      security:
-        - upp-api-key: []
-        - basic_auth: []
-      responses:
-        '200':
-          description: OK
-          headers:
-            X-Rate-Limit:
-              description: calls per hour allowed by the user
-              schema:
-                type: integer
-                format: int32
-            X-Expires-After:
-              $ref: '#/components/headers/ExpiresAfter'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentWebhookResponse'
-        '400':
-          description: Unauthorized
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentWebhook'
-        description: Payment payload
-        required: true
-      x-codeSamples:
-        - lang: C#
-          source: "API.v1.Echo echo = new API.v1.Echo();\r\necho.message = \"Hello World!\");\r\nEchoResponse response = echo.post();\r\nif (response.statusCode == HttpStatusCode.Created)\r\n{\r\n  // Success\r\n}\r\nelse\r\n{\r\n  // Something wrong -- check response for errors\r\n  Console.WriteLine(response.getRawResponse());\r\n}\r\n"
-        - lang: PHP
-          source: "$form = new \\API\\Entities\\Echo();\r\n$form->setMessage(\"Hello World!\");\r\ntry {\r\n    $pet = $client->echo()->post($form);\r\n} catch (UnprocessableEntityException $e) {\r\n    var_dump($e->getErrors());\r\n}\r\n"
-  /payments/coinbase:
+  /api/v1/payments/coinbase:
     post:
       tags:
         - Payment with Coinbase
@@ -205,8 +65,7 @@ paths:
         Coinbase Commerce dashboard
       operationId: UniversalPaymentCoinbase
       security:
-        - upp-api-key: []
-        - basic_auth: []
+        - ApiKeyAuth: []
       responses:
         '200':
           description: OK
@@ -222,7 +81,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentCoinbaseResponse'
-        '400':
+        '401':
           description: Unauthorized
       requestBody:
         content:
@@ -231,211 +90,14 @@ paths:
               $ref: '#/components/schemas/PaymentCoinbase'
         description: Payment payload
         required: true
-      x-codeSamples:
-        - lang: C#
-          source: "API.v1.Echo echo = new API.v1.Echo();\r\necho.message = \"Hello World!\");\r\nEchoResponse response = echo.post();\r\nif (response.statusCode == HttpStatusCode.Created)\r\n{\r\n  // Success\r\n}\r\nelse\r\n{\r\n  // Something wrong -- check response for errors\r\n  Console.WriteLine(response.getRawResponse());\r\n}\r\n"
-        - lang: PHP
-          source: "$form = new \\API\\Entities\\Echo();\r\n$form->setMessage(\"Hello World!\");\r\ntry {\r\n    $pet = $client->echo()->post($form);\r\n} catch (UnprocessableEntityException $e) {\r\n    var_dump($e->getErrors());\r\n}\r\n"
-  /user-provided-urle:
-    post:
-      tags:
-        - Webhook with Coinbase
-      summary: We relay payment confirmation with Coinbase Webhook
-      description: We relay payment confirmation with Coinbase Webhook
-      operationId: UniversalPaymentCoinbaseWebhook
-      security:
-        - upp-api-key: []
-        - basic_auth: []
-      responses:
-        '200':
-          description: OK
-          headers:
-            X-Rate-Limit:
-              description: calls per hour allowed by the user
-              schema:
-                type: integer
-                format: int32
-            X-Expires-After:
-              $ref: '#/components/headers/ExpiresAfter'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentWebhookCoinbaseResponse'
-        '400':
-          description: Unauthorized
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentWebhook'
-        description: Payment payload
-        required: true
-      x-codeSamples:
-        - lang: C#
-          source: "API.v1.Echo echo = new API.v1.Echo();\r\necho.message = \"Hello World!\");\r\nEchoResponse response = echo.post();\r\nif (response.statusCode == HttpStatusCode.Created)\r\n{\r\n  // Success\r\n}\r\nelse\r\n{\r\n  // Something wrong -- check response for errors\r\n  Console.WriteLine(response.getRawResponse());\r\n}\r\n"
-        - lang: PHP
-          source: "$form = new \\API\\Entities\\Echo();\r\n$form->setMessage(\"Hello World!\");\r\ntry {\r\n    $pet = $client->echo()->post($form);\r\n} catch (UnprocessableEntityException $e) {\r\n    var_dump($e->getErrors());\r\n}\r\n"
-  /pathItem:
-    post:
-      tags:
-        - Tag
-      summary: Operation summary
-      description: |
-        Operation description **Markdown**.
-      operationId: operationId
-      security:
-        - upp-api-key: []
-        - basic_auth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Schema'
-        description: requestBody description
-        required: true
-      responses:
-        '200':
-          description: OK
-          headers:
-            X-Rate-Limit:
-              description: Calls per hour allowed by the user.
-              schema:
-                type: integer
-                format: int32
-            X-Expires-After:
-              $ref: '#/components/headers/ExpiresAfter'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Schema'
-        '400':
-          $ref: '#/components/responses/Problem'
-  /pathItemWithExamples:
-    post:
-      tags:
-        - Tag
-      summary: Operation summary with examples
-      description: |
-        Operation description **markdown**.
-      operationId: postPathItemWithExamples
-      security:
-        - upp-api-key: []
-        - basic_auth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Schema'
-            examples:
-              mapName:
-                summary: My first example
-                description: My first example's description.
-                value:
-                  stringProperty: tada
-              mapNameDoesNotShowInDocsUnlessSummaryIsNotProvided:
-                value:
-                  stringProperty: checkmark
-        description: requestBody description
-        required: true
-      responses:
-        '200':
-          description: OK
-          headers:
-            X-Rate-Limit:
-              description: calls per hour allowed by the user
-              schema:
-                type: integer
-                format: int32
-            X-Expires-After:
-              $ref: '#/components/headers/ExpiresAfter'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Schema'
-        '400':
-          $ref: '#/components/responses/Problem'
 components:
   securitySchemes:
-    main_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: http://example.com/api/oauth/dialog
-          scopes:
-            read:users: read users info
-            write:users: modify or remove users
-    upp-api-key:
+    ApiKeyAuth:
       type: apiKey
       in: header
-      name: upp-api-key
-    basic_auth:
-      type: http
-      scheme: basic
+      name: X-UPP-API-KEY
   schemas:
-    Email:
-      description: User email address
-      type: string
-      format: test
-      example: john.smith@example.com
-    User:
-      type: object
-      properties:
-        username:
-          description: User supplied username
-          type: string
-          minLength: 4
-          example: John78
-        firstName:
-          description: User first name
-          type: string
-          minLength: 1
-          example: John
-        lastName:
-          description: User last name
-          type: string
-          minLength: 1
-          example: Smith
-        email:
-          $ref: '#/components/schemas/Email'
-    Problem:
-      type: object
-      additionalProperties: true
-      minProperties: 1
-      description: >-
-        The Problem Details JSON Object
-        [[RFC7807](https://tools.ietf.org/html/rfc7807)].
-      properties:
-        type:
-          type: string
-          description: >-
-            A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)]
-            that identifies the problem type. It should provide human-readable
-            documentation for the problem type. When this member is not present,
-            its value is assumed to be "about:blank".
-          format: uri
-        title:
-          type: string
-          description: >-
-            A short, human-readable summary of the problem type. It SHOULD NOT
-            change from occurrence to occurrence of the problem, except for
-            purposes of localization.
-        status:
-          type: integer
-          description: The HTTP status code.
-          minimum: 400
-          maximum: 599
-        detail:
-          type: string
-          description: >-
-            A human-readable explanation specific to this occurrence of the
-            problem.
-        instance:
-          type: string
-          description: >-
-            A URI reference that identifies the specific occurrence of the
-            problem.  It may or may not yield further information if
-            dereferenced.
-    Payment:
+    PaymentAdyen:
       type: object
       properties:
         merchantId:
@@ -443,9 +105,9 @@ components:
           type: string
           minLength: 4
           example: WonderWebShop
-        totalAmount:
+        value:
           description: total amount to pay
-          type: integer
+          type: string
           minLength: 1
           example: 10
         currency:
@@ -453,12 +115,12 @@ components:
           type: string
           minLength: 1
           example: USD
-        returnUrl:
+        returnURL:
           description: the url to return to upon successful payment completion
           type: string
           minLength: 1
-          example: https://example.com/result/success
-    PaymentResponse:
+          example: https://saasdevs.net
+    PaymentAdyenResponse:
       type: object
       properties:
         transactionId:
@@ -470,53 +132,12 @@ components:
           description: payment page url
           type: string
           minLength: 1
-          example: https://mymarkitpay.com/payments
+          example: https://saasdevs.net/payments/adyen?transactionId=JUWX2123
         createStatus:
           description: status of the page creation
           type: string
           minLength: 1
           example: true
-    PaymentWebhook:
-      type: object
-      properties:
-        upp-api-key:
-          description: unique upp api key
-          type: string
-          minLength: 4
-          example: 12345678xyz
-        upp-client-key:
-          description: unique client key [er customer]
-          type: string
-          minLength: 4
-          example: xyzw12345
-    PaymentWebhookResponse:
-      type: object
-      properties:
-        live:
-          description: live
-          type: string
-          minLength: 4
-          example: 'false'
-        notificationItems:
-          description: notification items
-          type: array
-          items:
-            type: object
-            minLength: 1
-            example:
-              amount:
-                currency: EUR
-                value: 1000
-              eventCode: AUTHORISATION
-              eventDate: '2022-06-20T03:26:47+02:00'
-              merchantAccountCode: MyMarkit_US
-              merchantReference: Reference 46b0ad7e-fa3b-466e-823e-b04e6bbba1d4
-              operations:
-                - REFUND
-              paymentMethod: ideal
-              pspReference: QW2KB9G5F4BLNK82
-              reason: ''
-              success: 'true'
     PaymentCoinbase:
       type: object
       properties:
@@ -525,9 +146,9 @@ components:
           type: string
           minLength: 4
           example: WonderWebShop
-        totalAmount:
+        value:
           description: total amount to pay
-          type: integer
+          type: string
           minLength: 1
           example: 10
         currency:
@@ -535,11 +156,11 @@ components:
           type: string
           minLength: 1
           example: USD
-        returnUrl:
+        returnURL:
           description: the url to return to upon successful payment completion
           type: string
           minLength: 1
-          example: https://example.com/result/success
+          example: https://saasdevs.net
     PaymentCoinbaseResponse:
       type: object
       properties:
@@ -552,301 +173,12 @@ components:
           description: payment page url
           type: string
           minLength: 1
-          example: https://mymarkitpay.com/payments/coinbase
+          example: https://saasdevs.net/payments/coinbase?transactionId=JUWX2123
         createStatus:
           description: status of the page creation
           type: string
           minLength: 1
           example: true
-    PaymentWebhookCoinbaseResponse:
-      type: object
-      properties:
-        attempt_number:
-          description: attempt number
-          type: integer
-          minLength: 1
-          example: 1
-        id:
-          description: id
-          type: string
-          minLength: 1
-          example: 51dc060b-8ac3-4615-9ef1-b4e3206cdee0
-        scheduled_for:
-          description: scheduled for
-          type: string
-          minLength: 1
-          example: '2022-07-01T22:10:50Z'
-        event:
-          description: event
-          type: object
-          minLength: 1
-          example:
-            api_version: '2018-03-22'
-            created_at: '2022-07-01T22:10:50Z'
-            data:
-              id: 937d2722-eac6-4e43-87ee-36320b911ad7
-              code: 8HWHNCW4
-              name: UPP Portal
-              utxo: false
-              pricing:
-                dai:
-                  amount: '10.432267416236208673'
-                  currency: DAI
-                usdc:
-                  amount: '10.428616'
-                  currency: USDC
-                local:
-                  amount: '10.00'
-                  currency: EUR
-                tether:
-                  amount: '10.441616'
-                  currency: USDT
-                bitcoin:
-                  amount: '0.00053858'
-                  currency: BTC
-                dogecoin:
-                  amount: '158.46552382'
-                  currency: DOGE
-                ethereum:
-                  amount: '0.009800000'
-                  currency: ETH
-                litecoin:
-                  amount: '0.20400266'
-                  currency: LTC
-                shibainu:
-                  amount: '1043905.517781834434434434'
-                  currency: SHIB
-                bitcoincash:
-                  amount: '0.10269945'
-                  currency: BCH
-              fee_rate: 0.01
-              logo_url: >-
-                https://res.cloudinary.com/commerce/image/upload/v1655522635/nzlih20yojcvbicpl3e1.png
-              metadata: {}
-              payments: []
-              resource: charge
-              timeline:
-                - time: '2022-07-01T22:10:50Z'
-                  status: NEW
-              addresses:
-                dai: '0xd2eabd78481ea6b349d3a701847e08ba24fb7d44'
-                usdc: '0xd2eabd78481ea6b349d3a701847e08ba24fb7d44'
-                tether: '0xd2eabd78481ea6b349d3a701847e08ba24fb7d44'
-                bitcoin: 3GwfdMbWDZYC5p9Jf93u6L3zJvExgarFHp
-                dogecoin: DEvZDwdvhSyU5CHB9ZFXFosyrhfkcXukWE
-                ethereum: '0xd2eabd78481ea6b349d3a701847e08ba24fb7d44'
-                litecoin: MBCMuEGiH7Nej2sz9CHTzTWsDuSxCc9bth
-                shibainu: '0xd2eabd78481ea6b349d3a701847e08ba24fb7d44'
-                bitcoincash: qppy6ftf8lszm06q6jyx3pyqmcdv4cdgtgt2cenl3c
-              pwcb_only: false
-              cancel_url: https://saasdevs.net/coinbase/cancel/
-              created_at: '2022-07-01T22:10:50Z'
-              expires_at: '2022-07-01T23:10:50Z'
-              hosted_url: https://commerce.coinbase.com/charges/8HWHNCW4
-              brand_color: '#E3B14D'
-              description: 'Total Charge in Local Currency:'
-              fees_settled: true
-              pricing_type: fixed_price
-              redirect_url: https://saasdevs.net/coinbase/success/
-              support_email: tim@mymarkit.com
-              brand_logo_url: >-
-                https://res.cloudinary.com/commerce/image/upload/v1655522635/nzlih20yojcvbicpl3e1.png
-              exchange_rates:
-                BCH-USD: '101.545'
-                BTC-USD: '19363.13'
-                DAI-USD: '0.99965'
-                ETH-USD: '1064.11'
-                LTC-USD: '51.12'
-                DOGE-USD: '0.06581'
-                SHIB-USD: '0.00000999'
-                USDC-USD: '1.0'
-                USDT-USD: '0.998755'
-              offchain_eligible: false
-              organization_name: MyMarkit!
-              payment_threshold:
-                overpayment_absolute_threshold:
-                  amount: '0.10'
-                  currency: USD
-                overpayment_relative_threshold: '0.01'
-                underpayment_absolute_threshold:
-                  amount: '0.10'
-                  currency: USD
-                underpayment_relative_threshold: '0.01'
-              local_exchange_rates:
-                BCH-EUR: '97.37'
-                BTC-EUR: '18567.31'
-                DAI-EUR: '0.96'
-                ETH-EUR: '1020.38'
-                LTC-EUR: '49.02'
-                DOGE-EUR: '0.06'
-                SHIB-EUR: '0.00'
-                USDC-EUR: '0.96'
-                USDT-EUR: '0.96'
-            id: b180df29-0c27-44e1-9129-3d8cab79ce18
-            resource: event
-            type: charge:created
-    Schema:
-      type: object
-      title: Scalars
-      properties:
-        stringProperty:
-          description: Property name's description (type is string)
-          type: string
-          examples:
-            - example
-            - sample
-        readOnlyStringProperty:
-          description: Notice this only appears in the response.
-          type: string
-          readOnly: true
-          examples:
-            - example
-        writeOnlyStringProperty:
-          description: Notice this only appears in the request.
-          type: string
-          writeOnly: true
-          examples:
-            - example
-        minLengthString:
-          description: Property name's description (type is string)
-          type: string
-          minLength: 4
-          examples:
-            - example
-        maxLengthString:
-          description: Property name's description (type is string)
-          type: string
-          maxLength: 140
-          examples:
-            - example
-        minAndMaxLengthString:
-          description: Property name's description (type is string)
-          type: string
-          minLength: 4
-          maxLength: 140
-          examples:
-            - example
-        nullableOrStringProperty:
-          description: Property name's description (type is string or null)
-          type:
-            - string
-            - null
-          examples:
-            - example
-        stringEnumValues:
-          description: Property name's description (type is string)
-          type: string
-          enum:
-            - sample
-            - example
-            - specimen
-            - case
-            - instance
-            - illustration
-        stringDateTime:
-          description: Property name's description (type is string, format is date-time)
-          type: string
-          format: date-time
-        stringDate:
-          description: Property name's description (type is string, format is date-time)
-          type: string
-          format: date
-        stringEmail:
-          description: Property name's description (type is string, format is email)
-          type: string
-          format: email
-        stringIpAddressV4:
-          description: Property name's description (type is string, format is ipv4 address)
-          type: string
-          format: ipv4
-        stringIpAddressV6:
-          description: Property name's description (type is string, format is ipv6 address)
-          type: string
-          format: ipv6
-        stringPassword:
-          description: Property name's description (type is string, format is password)
-          type: string
-          format: password
-        stringHostname:
-          description: Property name's description (type is string, format is hostname)
-          type: string
-          format: hostname
-        stringUri:
-          description: Property name's description (type is string, format is uri)
-          type: string
-          format: uri
-        stringUuid:
-          description: Property name's description (type is string, format is uuid)
-          type: string
-          format: uuid
-        numberProperty:
-          description: Property name's description (type is number)
-          type: number
-          example: 8
-        numberFloat:
-          description: Property name's description (type is number, format is float)
-          type: number
-          format: float
-        numberDouble:
-          description: Property name's description (type is number, format is double)
-          type: number
-          format: double
-        numberGreaterThanOrEquals:
-          description: Property name's description (type is number)
-          type: number
-          minimum: 5
-        numberGreaterThan:
-          description: Property name's description (type is number)
-          type: number
-          exclusiveMinimum: 5
-        numberLessThan:
-          description: Property name's description (type is number)
-          type: number
-          exclusiveMaximum: 8
-        numberLessThanOrEquals:
-          description: Property name's description (type is number)
-          type: number
-          maximum: 8
-        numberRange:
-          description: Property name's description (type is number)
-          type: number
-          minimum: 5
-          maximum: 8
-        numberRangeExclusiveMaximum:
-          description: Property name's description (type is number)
-          type: number
-          minimum: 5
-          exclusiveMaximum: 8
-        numberRangeExclusiveMinimumAndMaximum:
-          description: Property name's description (type is number)
-          type: number
-          exclusiveMinimum: 5
-          exclusiveMaximum: 8
-        numberMultipleOf:
-          description: Property name's description (type is number)
-          type: number
-          multipleOf: 2
-        integerType:
-          description: Property name's description (type is integer)
-          type: integer
-        integer32bit:
-          description: Property name's description (type is integer, format is int32)
-          type: integer
-          format: int32
-        integer64bit:
-          description: Property name's description (type is integer, format is int64)
-          type: integer
-          format: int64
-        booleanProperty:
-          description: Property name's description (type is boolean)
-          type: boolean
-  responses:
-    Problem:
-      description: Problem
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
   headers:
     ExpiresAfter:
       description: date in UTC when token expires

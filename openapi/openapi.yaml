@@ -20,7 +20,7 @@ tags:
 servers:
   - url: https://8gu4au3nb4.execute-api.us-east-1.amazonaws.com/test
 paths:
-  /api/v1/payments/adyen/:
+  /api/v1/payments/adyen:
     post:
       tags:
         - Payment with Adyen
@@ -55,9 +55,8 @@ paths:
               $ref: '#/components/schemas/PaymentAdyen'
         description: Payment payload
         required: true
-      x-codeSamples:
 
-  /api/v1/payments/coinbase/:
+  /api/v1/payments/coinbase:
     post:
       tags:
         - Payment with Coinbase
@@ -92,7 +91,6 @@ paths:
               $ref: '#/components/schemas/PaymentCoinbase'
         description: Payment payload
         required: true
-      x-codeSamples:
 
 components:
   securitySchemes:
