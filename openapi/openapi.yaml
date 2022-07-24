@@ -97,7 +97,7 @@ components:
     ApiKeyAuth:
       type: apiKey
       in: header
-      name: X-UPP-API-KEY
+      name: x-api-key
   schemas:
     PaymentAdyen:
       type: object
