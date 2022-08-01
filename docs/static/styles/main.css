@@ -1,3 +1,9 @@
+/* Global styles */
+a {
+  font-weight: 600;
+}
+
+/* Logo styles */
 .menu-content>div:first-child {
   text-align: left;
   padding-top: 40px;
@@ -14,6 +20,7 @@
   font-weight: 600;
 }
 
+/* Download button styles */
 .api-info p a::before {
   content: url('../assets/download-icon.svg');
   position: relative;
@@ -21,18 +28,17 @@
   padding-right: 8px;
 }
 
+/* Remove Chevron from dropdown */
 .menu-content>div:nth-child(3)>ul>li svg {
   display: none;
 }
 
-a {
-  font-weight: 600;
-}
-
+/* API content styles */
 .api-content {
   max-width: 1200px;
 }
 
+/* Remove redocly link */
 .menu-content>.scrollbar-container>ul+div {
   display: none !important;
 }

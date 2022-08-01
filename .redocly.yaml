@@ -16,6 +16,9 @@ features.openapi:
     overrides: 
       DownloadButton: 
         custom: 'background: red !important;'
+    logo: 
+      maxHeight: '36px'
+      maxWidth: '152px'
     colors:
       primary:
         main: "#2F76D3"
@@ -23,12 +26,6 @@ features.openapi:
       fontFamily: 'Source Sans Pro'
       headings: 
         fontWeight: '700'
-      heading1: 
-        color: 'green'
-      heading2: 
-        color: 'pink'
-      heading3: 
-        color: 'red'
       links: 
         color: '#2F76D3'
   generateCodeSamples:
