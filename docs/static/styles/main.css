@@ -1,0 +1,44 @@
+/* Global styles */
+a {
+  font-weight: 600;
+}
+
+/* Logo styles */
+.menu-content>div:first-child {
+  text-align: left;
+  padding-top: 40px;
+  padding-left: 20px;
+  padding-bottom: 10px;
+}
+
+.api-info p a {
+  border-radius: 20px;
+  background: #2F76D3;
+  color: #fff;
+  padding: 5px 8px;
+  padding-right: 10px;
+  font-weight: 600;
+}
+
+/* Download button styles */
+.api-info p a::before {
+  content: url('../assets/download-icon.svg');
+  position: relative;
+  top: 2px;
+  padding-right: 8px;
+}
+
+/* Remove Chevron from dropdown */
+.menu-content>div:nth-child(3)>ul>li svg {
+  display: none;
+}
+
+/* API content styles */
+.api-content {
+  max-width: 1200px;
+}
+
+/* Remove redocly link */
+.menu-content>.scrollbar-container>ul+div {
+  display: none !important;
+}

@@ -1,0 +1,18 @@
+type: object
+properties:
+        transactionId:
+          description: unique transaction Id
+          type: string
+          minLength: 4
+          example: JUWX2123
+        paymentPageUrl:
+          description: payment page url
+          type: string
+          minLength: 1
+          example: https://saasdevs.net/payments/coinbase?transactionId=JUWX2123
+        createStatus:
+          description: status of the page creation
+          type: string
+          minLength: 1
+          example: true
+

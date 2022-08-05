@@ -1,11 +1,11 @@
 post:
       tags:
-        - Payment with Adyen
-      summary: Create a payment page with Adyen
+        - Payment with Coinbase
+      summary: Create a payment page with Coinbase Commerce
       description: >-
-        Create a universal payment page loaded with payment methods from Adyen
-        dashboard
-      operationId: UniversalPayment
+        Create a universal payment page loaded with payment methods from
+        Coinbase Commerce dashboard
+      operationId: UniversalPaymentCoinbase
       security:
         - ApiKeyAuth: []
       responses:
@@ -22,14 +22,14 @@ post:
           content:
             application/json:
               schema:
-                $ref: '../components/schemas/PaymentAdyenResponse'
+                $ref: '../components/schemas/PaymentCoinbaseResponse'
         '401':
           description: Unauthorized
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '../components/schemas/PaymentAdyen'
+              $ref: '../components/schemas/PaymentCoinbase'
         description: Payment payload
         required: true
       x-codeSamples:
@@ -39,4 +39,4 @@ post:
         - lang: PHP
           source:
             $ref: ../code_samples/PHP/echo/post.php
-    
+        
